@@ -12,8 +12,8 @@ public interface IHistoriaClinicaEjb {
     
     Medicos createHistory(Medicos medico) throws Exception;
     
-    Medicos existMedById(Medicos medico) throws Exception;
+    Medicos existMedByCedula(Medicos medico) throws Exception;
     
-    Usuarios existUserById(Usuarios usuario) throws Exception;
+    Usuarios existUserByCedula(Usuarios usuario) throws Exception;
     
 }
