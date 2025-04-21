@@ -86,7 +86,7 @@ public class Usuarios implements Serializable {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuarios")
     private Pacientes pacientes;
     @OneToMany(mappedBy = "histCedulaUsuario")
-    private List<HistoriaClinica> historiaClinicaList;
+    private HistoriaClinica historiaClinica;
 
     public Usuarios() {
     }
@@ -193,12 +193,12 @@ public class Usuarios implements Serializable {
         this.pacientes = pacientes;
     }
 
-    public List<HistoriaClinica> getHistoriaClinicaList() {
-        return historiaClinicaList;
+    public HistoriaClinica getHistoriaClinicaList() {
+        return historiaClinica;
     }
 
-    public void setHistoriaClinicaList(List<HistoriaClinica> historiaClinicaList) {
-        this.historiaClinicaList = historiaClinicaList;
+    public void setHistoriaClinicaList(HistoriaClinica historiaClinica) {
+        this.historiaClinica = historiaClinica;
     }
 
     @Override
