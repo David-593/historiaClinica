@@ -1,8 +1,9 @@
 
 package com.historiaclinicabackend.dao.itf;
 
-import com.historiaclinicabackend.entities.Medicos;
+import com.historiaclinicabackend.entities.HistoriaClinica;
 import com.historiaclinicabackend.entities.Usuarios;
+import java.util.List;
 
 /**
  *
@@ -10,10 +11,12 @@ import com.historiaclinicabackend.entities.Usuarios;
  */
 public interface IHistoriaClinicaEjb {
     
-    Medicos createHistory(Medicos medico) throws Exception;
+    HistoriaClinica createHistory(HistoriaClinica medicalHistory) throws Exception;
     
-    Medicos existMedByCedula(Medicos medico) throws Exception;
-    
+    List<HistoriaClinica> findHistoryByCedulaUsuario(Usuarios usuario) throws Exception;
+
     Usuarios existUserByCedula(Usuarios usuario) throws Exception;
+    
+    void deleteHistoriaCli(HistoriaClinica medicalHistory) throws Exception;
     
 }
