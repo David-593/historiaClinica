@@ -17,6 +17,7 @@ import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.Date;
 
 /**
@@ -48,7 +49,7 @@ public class Citas implements Serializable {
     @NotNull
     @Column(name = "cita_hora")
     @Temporal(TemporalType.TIME)
-    private Date citaHora;
+    private LocalTime citaHora;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 10)
@@ -68,7 +69,7 @@ public class Citas implements Serializable {
         this.citaId = citaId;
     }
 
-    public Citas(Integer citaId, Date citaFecha, Date citaHora, String citaEstado) {
+    public Citas(Integer citaId, Date citaFecha, LocalTime citaHora, String citaEstado) {
         this.citaId = citaId;
         this.citaFecha = citaFecha;
         this.citaHora = citaHora;
@@ -91,11 +92,11 @@ public class Citas implements Serializable {
         this.citaFecha = citaFecha;
     }
 
-    public Date getCitaHora() {
+    public LocalTime getCitaHora() {
         return citaHora;
     }
 
-    public void setCitaHora(Date citaHora) {
+    public void setCitaHora(LocalTime citaHora) {
         this.citaHora = citaHora;
     }
 

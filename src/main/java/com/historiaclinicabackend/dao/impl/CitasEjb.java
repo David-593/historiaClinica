@@ -5,6 +5,7 @@ import com.historiaclinicabackend.dao.itf.ICitasEjb;
 import com.historiaclinicabackend.entities.Citas;
 import com.historiaclinicabackend.entities.Medicos;
 import com.historiaclinicabackend.entities.Pacientes;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
@@ -12,6 +13,7 @@ import jakarta.persistence.PersistenceContext;
  *
  * @author andre
  */
+@Stateless(name = "EjbCita")
 public class CitasEjb implements ICitasEjb {
     
     @PersistenceContext(name = "historiPU")
