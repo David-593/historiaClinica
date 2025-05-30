@@ -3,6 +3,7 @@ package com.historiaclinicabackend.service.impl;
 
 import com.historiaclinicabackend.dao.itf.ICitasEjb;
 import com.historiaclinicabackend.entities.Citas;
+import com.historiaclinicabackend.entities.Pacientes;
 import com.historiaclinicabackend.service.itf.ICitaService;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
@@ -50,8 +51,11 @@ public class CitaService implements ICitaService {
     }
 
     @Override
-    public Citas getCitaBy(JsonObject citaJson) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); 
+    public Pacientes getCitaByCeduPac(JsonObject citaPacJson) throws Exception {
+        Pacientes paciente = new Pacientes();
+        paciente.setPacCedulaUsuario(citaPacJson.getString("Cedula"));
+        
+        return citasEjb.existPacByCed(paciente);
     }
 
     @Override

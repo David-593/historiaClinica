@@ -17,4 +17,5 @@ public interface ICitasEjb {
     
     Medicos existMedByCed(Medicos medico) throws Exception;
     
+    void deleteCitaById(Citas cita) throws Exception;
 }

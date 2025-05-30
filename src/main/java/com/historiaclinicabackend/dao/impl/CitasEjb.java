@@ -34,5 +34,14 @@ public class CitasEjb implements ICitasEjb {
     public Medicos existMedByCed(Medicos medico) throws Exception {
         return em.find(Medicos.class, medico.getMedCedulaUsuario());
     }
+
+    @Override
+    public void deleteCitaById(Citas cita) throws Exception {
+        if(cita.getCitaId() != null){
+            em.remove(cita);
+        }else{
+            throw new Exception("Cita no encontrada para eliminación.");
+        }
+    }
     
 }
