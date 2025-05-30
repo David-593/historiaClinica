@@ -54,7 +54,7 @@ public class Citas implements Serializable {
     @NotNull
     @Size(min = 1, max = 10)
     @Column(name = "cita_estado")
-    private String citaEstado;
+    private boolean citaEstado;
     @JoinColumn(name = "cita_cedula_medico", referencedColumnName = "med_cedula_usuario")
     @ManyToOne
     private Medicos citaCedulaMedico;
@@ -69,7 +69,7 @@ public class Citas implements Serializable {
         this.citaId = citaId;
     }
 
-    public Citas(Integer citaId, Date citaFecha, LocalTime citaHora, String citaEstado) {
+    public Citas(Integer citaId, Date citaFecha, LocalTime citaHora, boolean citaEstado) {
         this.citaId = citaId;
         this.citaFecha = citaFecha;
         this.citaHora = citaHora;
@@ -100,11 +100,11 @@ public class Citas implements Serializable {
         this.citaHora = citaHora;
     }
 
-    public String getCitaEstado() {
+    public boolean getCitaEstado() {
         return citaEstado;
     }
 
-    public void setCitaEstado(String citaEstado) {
+    public void setCitaEstado(boolean citaEstado) {
         this.citaEstado = citaEstado;
     }
 
