@@ -43,6 +43,7 @@ public class CitaService implements ICitaService {
         Citas cita = new Citas();
         cita.setCitaFecha(fechaDate);
         cita.setCitaHora(horaCita);
+        cita.setCitaEstado(true);
         
         return citasEjb.createCitas(cita);
         
