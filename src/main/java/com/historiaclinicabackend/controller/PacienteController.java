@@ -55,7 +55,7 @@ public class PacienteController {
         }
     }
 
-    @GET
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/getPaciente")
@@ -87,7 +87,29 @@ public class PacienteController {
             return Response.ok().entity(jsonResponse).build();
 
         } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(e.getMessage())
+                    .build();
+        }
+    }
+    
+    //Login para la pantalla de pacientes
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/login")
+    public Response LoginPaciente(JsonObject pacienteJson){
+        try{
+            String Message = PacienteService.loginPaciente(pacienteJson);
+            JsonObject response = Json.createObjectBuilder()
+                    .add("Message", Message)
+                    .build();
+            return Response.ok().entity(response).build();
+        } catch(Exception e){
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(Json.createObjectBuilder()
+                            .add("Error", e.getMessage()))
+                    .build();
         }
     }
 
