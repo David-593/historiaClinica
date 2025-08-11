@@ -75,11 +75,12 @@ public class MedicoController {
         }
     }
 
+    //Login para la pantalla de medicos
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/login")
-    public Response loginMed(JsonObject loginJson) {
+    public Response LoginMed(JsonObject loginJson) {
         try {
             String message = MedicoService.loginMed(loginJson);
             JsonObject response = Json.createObjectBuilder()
@@ -89,7 +90,8 @@ public class MedicoController {
         } catch (Exception e) {
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity(Json.createObjectBuilder()
-                            .add("error", e.getMessage()).build()).build();
+                            .add("error", e.getMessage()))
+                    .build();
         }
     }
 

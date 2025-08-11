@@ -15,7 +15,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Date;
@@ -52,9 +51,8 @@ public class Citas implements Serializable {
     private LocalTime citaHora;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
     @Column(name = "cita_estado")
-    private boolean citaEstado;
+    private String citaEstado;
     @JoinColumn(name = "cita_cedula_medico", referencedColumnName = "med_cedula_usuario")
     @ManyToOne
     private Medicos citaCedulaMedico;
@@ -69,7 +67,7 @@ public class Citas implements Serializable {
         this.citaId = citaId;
     }
 
-    public Citas(Integer citaId, Date citaFecha, LocalTime citaHora, boolean citaEstado) {
+    public Citas(Integer citaId, Date citaFecha, LocalTime citaHora, String citaEstado) {
         this.citaId = citaId;
         this.citaFecha = citaFecha;
         this.citaHora = citaHora;
@@ -100,11 +98,11 @@ public class Citas implements Serializable {
         this.citaHora = citaHora;
     }
 
-    public boolean getCitaEstado() {
+    public String getCitaEstado() {
         return citaEstado;
     }
 
-    public void setCitaEstado(boolean citaEstado) {
+    public void setCitaEstado(String citaEstado) {
         this.citaEstado = citaEstado;
     }
 
@@ -123,7 +121,7 @@ public class Citas implements Serializable {
     public void setCitaCedulaPaciente(Pacientes citaCedulaPaciente) {
         this.citaCedulaPaciente = citaCedulaPaciente;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
