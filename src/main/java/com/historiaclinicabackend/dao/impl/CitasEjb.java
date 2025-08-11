@@ -43,5 +43,5 @@ public class CitasEjb implements ICitasEjb {
             throw new Exception("Cita no encontrada para eliminación.");
         }
     }
-    
+
 }

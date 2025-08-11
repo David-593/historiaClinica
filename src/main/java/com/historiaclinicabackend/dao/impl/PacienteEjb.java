@@ -3,6 +3,7 @@ package com.historiaclinicabackend.dao.impl;
 
 import com.historiaclinicabackend.dao.itf.IPacienteEjb;
 import com.historiaclinicabackend.entities.Pacientes;
+import com.historiaclinicabackend.entities.Usuarios;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -27,6 +28,12 @@ public class PacienteEjb implements IPacienteEjb{
     public Pacientes existPacByCedula(Pacientes paciente) throws Exception {
         return em.find(Pacientes.class, paciente.getPacCedulaUsuario());
     }
+
+    @Override
+    public Usuarios existUserByCedula(Usuarios usuario) throws Exception {
+        return em.find(Usuarios.class, usuario.getUsuCedula());
+    }
+    
 
     
 }
