@@ -3,6 +3,7 @@ package com.historiaclinicabackend.service.impl;
 
 import com.historiaclinicabackend.dao.itf.ICitasEjb;
 import com.historiaclinicabackend.entities.Citas;
+import com.historiaclinicabackend.entities.Medicos;
 import com.historiaclinicabackend.entities.Pacientes;
 import com.historiaclinicabackend.service.itf.ICitaService;
 import jakarta.ejb.EJB;
@@ -44,7 +45,9 @@ public class CitaService implements ICitaService {
         Citas cita = new Citas();
         cita.setCitaFecha(fechaDate);
         cita.setCitaHora(horaCita);
-        cita.setCitaEstado(true);
+        cita.setCitaEstado("Pendiente");
+        cita.setCitaCedulaPaciente(getCitaByCeduPac(citaJson));
+        cita.setCitaCedulaMedico(getCitasByCeduMed(citaJson));
         
         return citasEjb.createCitas(cita);
         
@@ -53,9 +56,17 @@ public class CitaService implements ICitaService {
     @Override
     public Pacientes getCitaByCeduPac(JsonObject citaPacJson) throws Exception {
         Pacientes paciente = new Pacientes();
-        paciente.setPacCedulaUsuario(citaPacJson.getString("Cedula"));
+        paciente.setPacCedulaUsuario(citaPacJson.getString("CedulaPaciente"));
         
         return citasEjb.existPacByCed(paciente);
+    }
+    
+    @Override
+    public Medicos getCitasByCeduMed(JsonObject citaMedJson) throws Exception {
+        Medicos medico = new Medicos();
+        medico.setMedCedulaUsuario(citaMedJson.getString("CedulaMedico"));
+        
+        return citasEjb.existMedByCed(medico);
     }
 
     @Override
