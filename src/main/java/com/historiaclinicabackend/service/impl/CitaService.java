@@ -2,6 +2,7 @@
 package com.historiaclinicabackend.service.impl;
 
 import com.historiaclinicabackend.dao.itf.ICitasEjb;
+import com.historiaclinicabackend.dao.itf.IPacienteEjb;
 import com.historiaclinicabackend.entities.Citas;
 import com.historiaclinicabackend.entities.Medicos;
 import com.historiaclinicabackend.entities.Pacientes;
@@ -15,6 +16,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -26,6 +28,9 @@ public class CitaService implements ICitaService {
 
     @EJB
     private ICitasEjb citasEjb;
+    
+    @EJB
+    private IPacienteEjb pacienteEjb;
     
     @Override
     public Citas createCita(JsonObject citaJson) throws Exception {
@@ -72,6 +77,31 @@ public class CitaService implements ICitaService {
     @Override
     public String deleteCitaById(JsonObject citaJson) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
+    @Override
+    public List<Citas> getAllCitasByCed(JsonObject citaJson) throws Exception {
+        String cedula = citaJson.getString("CedulaPaciente");
+        
+        Pacientes paciente = new Pacientes();
+        paciente.setPacCedulaUsuario(cedula);
+        
+        Pacientes pacienteEncontrado = pacienteEjb.existPacByCedula(paciente);  
+    
+        if (paciente == null) {
+            throw new Exception("No existe paciente con cédula: " + cedula);
+        }
+        
+        Citas cita = new Citas();
+        cita.setCitaCedulaPaciente(pacienteEncontrado);
+         
+        List<Citas> citas = citasEjb.getAllCitasByCed(cita);
+
+        if (citas.isEmpty()) {
+            throw new Exception("No se encontraron citas para la cédula: " + cedula);
+        }
+        
+        return citas;
     }
     
 }

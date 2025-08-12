@@ -8,6 +8,10 @@ import com.historiaclinicabackend.entities.Pacientes;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import java.util.List;
 
 /**
  *
@@ -42,6 +46,17 @@ public class CitasEjb implements ICitasEjb {
         }else{
             throw new Exception("Cita no encontrada para eliminación.");
         }
+    }
+
+    @Override
+    public List<Citas> getAllCitasByCed(Citas cita) throws Exception {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Citas> cq = cb.createQuery(Citas.class);
+        Root<Citas> root = cq.from(Citas.class);
+        
+        cq.select(root).where(cb.equal(root.get("citaCedulaPaciente"), cita.getCitaCedulaPaciente()));
+        
+        return em.createQuery(cq).getResultList();
     }
 
 }
