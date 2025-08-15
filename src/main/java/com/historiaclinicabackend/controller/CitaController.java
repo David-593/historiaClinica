@@ -2,8 +2,10 @@
 package com.historiaclinicabackend.controller;
 
 import com.historiaclinicabackend.entities.Citas;
+import com.historiaclinicabackend.security.middleware.Secured;
 import com.historiaclinicabackend.service.itf.ICitaService;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.control.RequestContextController;
 import jakarta.inject.Inject;
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
@@ -12,6 +14,8 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
@@ -34,6 +38,7 @@ public class CitaController {
    @Consumes(MediaType.APPLICATION_JSON)
    @Produces(MediaType.APPLICATION_JSON)
    @Path("/registerCita")
+   @Secured({"medico", "paciente"})
    public Response RegisterCita(JsonObject cita){
        try{
            Citas citasResponse = CitaService.createCita(cita);
@@ -60,7 +65,8 @@ public class CitaController {
    @POST
    @Consumes(MediaType.APPLICATION_JSON)
    @Produces(MediaType.APPLICATION_JSON)
-   @Path("/getCita")
+   @Path("/getCitabyCed")
+   @Secured({"admin", "medico"})
    public Response getAllCitasByCed(JsonObject cita){
        try{
            List<Citas> citasResponse = CitaService.getAllCitasByCed(cita);

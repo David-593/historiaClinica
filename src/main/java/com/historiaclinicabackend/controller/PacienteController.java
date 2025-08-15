@@ -1,13 +1,13 @@
 package com.historiaclinicabackend.controller;
 
 import com.historiaclinicabackend.entities.Pacientes;
+import com.historiaclinicabackend.security.middleware.Secured;
 import com.historiaclinicabackend.service.itf.IPacienteService;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -30,6 +30,7 @@ public class PacienteController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/registerPac")
+    @Secured({"paciente", "admin"})
     public Response registerPaciente(JsonObject paciente){
         try {
             if(!paciente.containsKey("Cedula")){
@@ -59,6 +60,7 @@ public class PacienteController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/getPaciente")
+    @Secured({"admin"})
     public Response getPacCedulaUser(JsonObject paciente) {
         try {
             if (!paciente.containsKey("Cedula")) {
@@ -93,24 +95,4 @@ public class PacienteController {
         }
     }
     
-    //Login para la pantalla de pacientes
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/login")
-    public Response LoginPaciente(JsonObject pacienteJson){
-        try{
-            String Message = PacienteService.loginPaciente(pacienteJson);
-            JsonObject response = Json.createObjectBuilder()
-                    .add("Message", Message)
-                    .build();
-            return Response.ok().entity(response).build();
-        } catch(Exception e){
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(Json.createObjectBuilder()
-                            .add("Error", e.getMessage()))
-                    .build();
-        }
-    }
-
 }

@@ -1,14 +1,12 @@
 
 package com.historiaclinicabackend.controller;
 
-import com.historiaclinicabackend.entities.Citas;
 import com.historiaclinicabackend.entities.Usuarios;
-import com.historiaclinicabackend.service.itf.ICitaService;
+import com.historiaclinicabackend.security.middleware.Secured;
 import com.historiaclinicabackend.service.itf.IUsuarioService;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.json.Json;
-import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -17,8 +15,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 
 @Path("/usuario")
@@ -28,9 +24,7 @@ public class UsuarioController {
     @Inject
     private IUsuarioService usuarioService;
     
-    @Inject 
-    private ICitaService CitaService;
-
+    //no necesita proteger ruta, es para todo el mundo
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -68,6 +62,7 @@ public class UsuarioController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Secured({"admin", "medico"})
     @Path("/getUser")
     public Response getUserByCedula(JsonObject usuario) {
         try {
@@ -93,66 +88,6 @@ public class UsuarioController {
             return Response.ok().entity(jsonResponse).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-        }
-    }
-    
-    //Usa el mismo método pero hay que hacerlo independiente CREAR ESTE METODO PARA EL USUARIO
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/getCitaByUser")
-    public Response getAllCitasByCed(JsonObject cita){
-        try{
-            List<Citas> citasResponse = CitaService.getAllCitasByCed(cita);
-
-
-            if(citasResponse == null || citasResponse.isEmpty()) {
-                 String message = "No se encontraron citas para la cédula dada";
-                 return Response.status(Response.Status.BAD_REQUEST).entity(message).build();
-            }   
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-             DateTimeFormatter sdfHora = DateTimeFormatter.ofPattern("HH:mm");
-
-             List<JsonObject> citasJson = citasResponse.stream()
-                 .map(c -> Json.createObjectBuilder()
-                     .add("CedulaPaciente", c.getCitaCedulaPaciente().getPacCedulaUsuario())
-                     .add("CedulaMedico", c.getCitaCedulaMedico().getMedCedulaUsuario())
-                     .add("FechaCita", sdf.format(c.getCitaFecha()))
-                     .add("HoraCita", c.getCitaHora().format(sdfHora))
-                     .build()
-                 )
-                 .toList();
-
-             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-             citasJson.forEach(arrayBuilder::add);
-
-             JsonObject jsonResponse = Json.createObjectBuilder()
-                 .add("Citas", arrayBuilder.build())
-                 .build();
-
-             return Response.ok().entity(jsonResponse).build();
-        }catch(Exception e){
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-        }
-    }
-
-    //Login del super usuario
-    @POST
-    @Path("/login")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response login(JsonObject usuarioJson) {
-        try {
-            String message = usuarioService.loginUser(usuarioJson);
-            JsonObject response = Json.createObjectBuilder()
-                    .add("message", message)
-                    .build();
-            return Response.ok().entity(response).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(Json.createObjectBuilder()
-                            .add("error", e.getMessage()).build()).build();
         }
     }
 

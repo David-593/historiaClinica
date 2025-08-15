@@ -1,6 +1,7 @@
 package com.historiaclinicabackend.controller;
 
 import com.historiaclinicabackend.entities.Medicos;
+import com.historiaclinicabackend.security.middleware.Secured;
 import com.historiaclinicabackend.service.itf.IMedicoService;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -28,6 +29,7 @@ public class MedicoController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/registerMed")
+    @Secured({"admin"})
     public Response registerMedico(JsonObject medico) {
         try {
             if (!medico.containsKey("Cedula")) {
@@ -51,6 +53,7 @@ public class MedicoController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/getMedico")
+    @Secured({"admin"})
     public Response getMedCedulaUser(JsonObject medico) {
         try {
             if (!medico.containsKey("Cedula")) {
@@ -72,26 +75,6 @@ public class MedicoController {
             return Response.ok().entity(jsonResponse).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-        }
-    }
-
-    //Login para la pantalla de medicos
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/login")
-    public Response LoginMed(JsonObject loginJson) {
-        try {
-            String message = MedicoService.loginMed(loginJson);
-            JsonObject response = Json.createObjectBuilder()
-                    .add("message", message)
-                    .build();
-            return Response.ok().entity(response).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(Json.createObjectBuilder()
-                            .add("error", e.getMessage()))
-                    .build();
         }
     }
 
