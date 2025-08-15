@@ -26,7 +26,7 @@ public class MedicoEjb implements IMedicosEjb{
 
     @Override
     public Medicos existMedByCedula(Medicos medico) throws Exception {
-         return em.find(Medicos.class, medico.getMedCedulaUsuario());
+        return em.find(Medicos.class, medico.getMedCedulaUsuario());
     }
 
     @Override
