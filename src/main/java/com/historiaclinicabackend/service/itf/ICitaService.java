@@ -20,7 +20,7 @@ public interface ICitaService {
     Medicos getCitasByCeduMed(JsonObject citaMedJson) throws Exception;
     
     List<Citas> getAllCitasByCed(JsonObject citaJson) throws Exception;
-     
+    
     String deleteCitaById(JsonObject citaJson) throws Exception;
     
 }
